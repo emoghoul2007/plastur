@@ -352,6 +352,26 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 
             fetch(tgUrl).then(response => {
                 if (response.ok) {
+                    // --- ПОЧАТОК КОДУ ДЛЯ GOOGLE ТАБЛИЦІ ---
+                    const googleSheetUrl = 'https://script.google.com/macros/s/AKfycbxFdvMBUE-zwCXaZ38CrQAc4DlxPBs000_ZixvDfLNvSlLm-zGWuZZ-GQDBJn2YSutJuQ/exec';
+                    fetch(googleSheetUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            "name": name,
+                            "phone": phone,
+                            "variant": qty,
+                            "total": (function(q) {
+                                if (q.includes('1 шт')) return 249;
+                                if (q.includes('2+2=4')) return 498;
+                                if (q.includes('3+3=6')) return 747;
+                                if (q.includes('4+4=8')) return 996;
+                                return 0;
+                            })(qty)
+                        })
+                    });
+                    // --- КІНЕЦЬ КОДУ ДЛЯ GOOGLE ТАБЛИЦІ ---
                     alert("✅ Дякуємо! Ваше замовлення успішно прийнято.");
                     document.getElementById('tgForm').reset();
                     submitBtn.textContent = 'ОФОРМИТИ ЗАМОВЛЕННЯ';
