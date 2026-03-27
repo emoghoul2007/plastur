@@ -131,6 +131,21 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         50% { transform: translateX(-50%) scale(1.05); }
         100% { transform: translateX(-50%) scale(1); }
     }
+    /* Адаптивність для мобільних екранів */
+@media (max-width: 480px) {
+    /* Заміни .offer-title на клас, який використовується для твого тексту */
+    .promo-card h3, .offer-text, .package-name { 
+        font-size: 16px !important; /* Зменшуємо розмір букв */
+        line-height: 1.2 !important; /* Робимо компактний відступ між рядками */
+        margin-bottom: 5px !important;
+    }
+
+    /* Якщо кнопки "Економія" теж великі, можна зменшити і їх */
+    .economy-badge {
+        font-size: 12px !important;
+        padding: 2px 8px !important;
+    }
+}
 </style>
 </head>
 <body>
