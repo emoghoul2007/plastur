@@ -326,7 +326,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         // Запускаємо перше сповіщення через 4 секунди після загрузки сторінки
         setTimeout(showNotification, 4000);
 
-        // --- ВІДПРАВКА В ТГ (твій старий скрипт) ---
+// --- ВІДПРАВКА В ТГ ТА GOOGLE SHEETS ---
         function sendToTelegram(event) {
             event.preventDefault();
             const qty = document.getElementById('quantity').value; 
@@ -345,42 +345,59 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             submitBtn.textContent = 'ВІДПРАВКА...';
             submitBtn.disabled = true;
 
+            // 1. Формируем данные для Telegram
             const BOT_TOKEN = '8741175626:AAGSJIsnA2trWwhPVW6dVxEujD9Nr9RDOVA';
             const CHAT_ID = '-1003835862302';
             const textMessage = `🔥 НОВЕ ЗАМОВЛЕННЯ\n\n📦 Товар: Пластирі Kinoki\n🛒 Варіант: ${qty}\n👤 ПІБ: ${name}\n📞 Телефон: ${phone}`;
             const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(textMessage)}`;
 
-            fetch(tgUrl).then(response => {
-                if (response.ok) {
-                    // --- ПОЧАТОК КОДУ ДЛЯ GOOGLE ТАБЛИЦІ ---
-                    const googleSheetUrl = 'https://script.google.com/macros/s/AKfycbxFdvMBUE-zwCXaZ38CrQAc4DlxPBs000_ZixvDfLNvSlLm-zGWuZZ-GQDBJn2YSutJuQ/exec';
-                    fetch(googleSheetUrl, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            "name": name,
-                            "phone": phone,
-                            "variant": qty,
-                            "total": (function(q) {
-                                if (q.includes('1 шт')) return 249;
-                                if (q.includes('2+2=4')) return 498;
-                                if (q.includes('3+3=6')) return 747;
-                                if (q.includes('4+4=8')) return 996;
-                                return 0;
-                            })(qty)
-                        })
-                    // --- КІНЕЦЬ КОДУ ДЛЯ GOOGLE ТАБЛИЦІ ---
-                    alert("✅ Дякуємо! Ваше замовлення успішно прийнято.");
-                    document.getElementById('tgForm').reset();
-                    submitBtn.textContent = 'ОФОРМИТИ ЗАМОВЛЕННЯ';
-                    submitBtn.disabled = false;
-                } else {
-                    alert('Помилка відправки. Спробуйте ще раз.');
-                    submitBtn.textContent = 'ОФОРМИТИ ЗАМОВЛЕННЯ';
-                    submitBtn.disabled = false;
-                }
+            // 2. Формируем данные для Google Таблицы
+            const googleSheetUrl = 'https://script.google.com/macros/s/AKfycbxFdvMBUE-zwCXaZ38CrQAc4DlxPBs000_ZixvDfLNvSlLm-zGWuZZ-GQDBJn2YSutJuQ/exec';
+            const sheetData = {
+                "name": name,
+                "phone": phone,
+                "variant": qty,
+                "total": (function(q) {
+                    if (q.includes('1 шт')) return 249;
+                    if (q.includes('2+2=4')) return 498;
+                    if (q.includes('3+3=6')) return 747;
+                    if (q.includes('4+4=8')) return 996;
+                    return 0;
+                })(qty)
+            };
+
+            // Выводим в консоль для проверки (нажми F12 на сайте, чтобы увидеть)
+            console.log("Відправляємо в Таблицю:", sheetData);
+
+            // 3. Отправляем ПАРАЛЛЕЛЬНО оба запроса
+            const sendTG = fetch(tgUrl);
+            const sendSheet = fetch(googleSheetUrl, {
+                method: 'POST',
+                mode: 'no-cors', // Из-за этого мы не видим ответ от гугла, но данные уходят
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sheetData)
             });
+
+            // Ждем завершения обеих отправок
+            Promise.all([sendTG, sendSheet])
+                .then(responses => {
+                    // Проверяем только ответ Телеграма (responses[0]), 
+                    // так как Google (responses[1]) из-за no-cors всегда будет "непрозрачным"
+                    if (responses[0].ok) {
+                        alert("✅ Дякуємо! Ваше замовлення успішно прийнято.");
+                        document.getElementById('tgForm').reset();
+                    } else {
+                        alert('Помилка відправки в Telegram. Спробуйте ще раз.');
+                    }
+                })
+                .catch(error => {
+                    console.error("Помилка:", error);
+                    alert('Виникла помилка при відправці. Перевірте з\'єднання.');
+                })
+                .finally(() => {
+                    submitBtn.textContent = 'ОФОРМИТИ ЗАМОВЛЕННЯ';
+                    submitBtn.disabled = false;
+                });
         }
     </script>
 </body>
