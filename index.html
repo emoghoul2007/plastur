@@ -377,8 +377,8 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             submitBtn.disabled = true;
 
             // 1. Формируем данные для Telegram
-            const BOT_TOKEN = '8741175626:AAGSJIsnA2trWwhPVW6dVxEujD9Nr9RDOV';
-            const CHAT_ID = '-100383586230';
+            const BOT_TOKEN = '8741175626:AAGSJIsnA2trWwhPVW6dVxEujD9Nr9RDOVA';
+            const CHAT_ID = '-1003835862302';
             const textMessage = `🔥 НОВЕ ЗАМОВЛЕННЯ\n\n📦 Товар: Пластирі Kinoki\n🛒 Варіант: ${qty}\n👤 ПІБ: ${name}\n📞 Телефон: ${phone}`;
             const tgUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(textMessage)}`;
 
