@@ -52,7 +52,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     /* --- КНОПКА ЗВЕРХУ --- */
     .floating-top-btn { position: fixed; top: 15px; left: 50%; background: #d32f2f; color: #fff; text-decoration: none; padding: 10px 15px; font-weight: 900; font-size: 14px; border-radius: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1001; animation: pulse-center 2s infinite; text-transform: uppercase; border: 2px solid #fff; white-space: nowrap;}
 
-    .hero { text-align: center; background: #fff; padding-bottom: 0px; }
+    .hero { text-align: center; background: #fff; padding-bottom: 0px; margin-top: 0; line-height: 0; }
     
     /* --- ЦІНОВИЙ БЛОК --- */
     .price-block { text-align: center; padding: 20px; background: #e8f5e9; border-bottom: 2px dashed #4CAF50; }
@@ -80,6 +80,26 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     
     .marketing-text { font-size: 16px; line-height: 1.6; text-align: justify; padding: 10px; background: #f1f8e9; border-left: 4px solid #4CAF50; border-radius: 4px; margin-bottom: 15px; font-weight: 500;}
     .marketing-text.highlight { background: #fff9c4; border-left-color: #fbc02d; text-align: center; font-weight: bold; }
+
+    /* Стилі для таблиці характеристик */
+    .specs-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-family: inherit;
+        font-size: 14px;
+        background: #fff;
+    }
+    .specs-table tr:nth-child(even) { background-color: #f9f9f9; }
+    .specs-table td {
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+    }
+    .specs-table td:first-child {
+        font-weight: bold;
+        color: #2E7D32;
+        width: 40%;
+    }
 
     /* Відгуки */
     .swipe-hint { text-align: center; font-size: 14px; color: #666; margin-bottom: 10px; font-style: italic; font-weight: bold;}
@@ -133,14 +153,11 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     }
     /* Адаптивність для мобільних екранів */
 @media (max-width: 480px) {
-    /* Заміни .offer-title на клас, який використовується для твого тексту */
     .promo-card h3, .offer-text, .package-name { 
-        font-size: 16px !important; /* Зменшуємо розмір букв */
-        line-height: 1.2 !important; /* Робимо компактний відступ між рядками */
+        font-size: 16px !important; 
+        line-height: 1.2 !important; 
         margin-bottom: 5px !important;
     }
-
-    /* Якщо кнопки "Економія" теж великі, можна зменшити і їх */
     .economy-badge {
         font-size: 12px !important;
         padding: 2px 8px !important;
@@ -223,6 +240,17 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             </div>
 
             <img src="gifdiesasib2.gif" alt="Результат" style="margin-bottom: 25px;">
+
+            <h2 class="section-title">Технічні характеристики</h2>
+            <table class="specs-table">
+                <tr><td>Призначення</td><td>Глибоке очищення від токсинів та шлаків</td></tr>
+                <tr><td>Зона застосування</td><td>Стопи (акупунктурні точки)</td></tr>
+                <tr><td>Склад</td><td>Бамбуковий оцет, турмалін, хітозан, перила</td></tr>
+                <tr><td>Час дії</td><td>6–8 годин (під час сну)</td></tr>
+                <tr><td>Ефект</td><td>Зняття набряків, покращення сну та імунітету</td></tr>
+                <tr><td>Комплектація</td><td>10 пластирів + 10 клейких основ</td></tr>
+                <tr><td>Виробник</td><td>Південна Корея (за ліцензією Японії)</td></tr>
+            </table>
 
             <h2 class="section-title">Часті питання</h2>
             <details>
