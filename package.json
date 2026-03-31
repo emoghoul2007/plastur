@@ -1,0 +1,22 @@
+{
+  "name": "plastur",
+  "version": "1.0.0",
+  "description": "Детокс-пластирі Kinoki - Очищення організму",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emoghoul2007/plastur.git"
+  },
+  "keywords": [
+    "kinoki",
+    "detox",
+    "patches",
+    "landing-page"
+  ],
+  "author": "",
+  "license": "ISC"
+}
