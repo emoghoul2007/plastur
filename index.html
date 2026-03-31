@@ -163,6 +163,29 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         padding: 2px 8px !important;
     }
 }
+   /* Повідомлення про успішне замовлення */
+    .success-message {
+        display: none; /* Приховано за замовчуванням */
+        text-align: center;
+        background: #d4edda; /* Приємний світло-зелений фон */
+        color: #155724; /* Темно-зелений текст */
+        padding: 30px 20px;
+        border-radius: 8px;
+        border: 2px solid #c3e6cb;
+        margin-top: 10px;
+    }
+    .success-message h3 { 
+        margin-top: 0; 
+        font-size: 24px; 
+        color: #0f5132; 
+        margin-bottom: 15px;
+    }
+    .success-message p { 
+        font-size: 18px; 
+        font-weight: 600; 
+        margin: 0;
+        line-height: 1.5;
+    } 
 </style>
 </head>
 <body>
@@ -284,8 +307,9 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 
             <img src="pokaztri.jpg" alt="Етапи очищення" style="margin-top: 20px;">
 
-            <div class="order-form" id="order">
-                <h2>Оформлення замовлення</h2>
+<div class="order-form" id="order">
+                <h2 id="formTitle">Оформлення замовлення</h2>
+                
                 <form id="tgForm" onsubmit="sendToTelegram(event)">
                     <div class="form-group">
                         <label for="quantity">Оберіть варіант замовлення:</label>
@@ -307,6 +331,11 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                     <button type="submit" class="submit-btn" id="submitBtn">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
                     <div class="stock-left-badge">🎁 залишилося 15 штук по акції 🎁</div>
                 </form>
+
+                <div id="successMessage" class="success-message">
+                    <h3>✅ Дякуємо за замовлення!</h3>
+                    <p>Ваша заявка успішно прийнята.<br>Очікуйте 10-15 хв. дзвінка менеджера для підтвердження.</p>
+                </div>
             </div>
             
             <img src="dostavkainfo.jpg" alt="Інформація про доставку" style="margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 8px;">
@@ -437,14 +466,14 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 body: JSON.stringify(sheetData)
             });
 
-            // Ждем завершения обеих отправок
+// Ждем завершения обеих отправок
             Promise.all([sendTG, sendSheet])
                 .then(responses => {
-                    // Проверяем только ответ Телеграма (responses[0]), 
-                    // так как Google (responses[1]) из-за no-cors всегда будет "непрозрачным"
                     if (responses[0].ok) {
-                        alert("✅ Дякуємо! Ваше замовлення успішно прийнято.");
-                        document.getElementById('tgForm').reset();
+                        // Замість alert ховаємо форму і показуємо блок подяки
+                        document.getElementById('tgForm').style.display = 'none';
+                        document.getElementById('formTitle').style.display = 'none';
+                        document.getElementById('successMessage').style.display = 'block';
                     } else {
                         alert('Помилка відправки в Telegram. Спробуйте ще раз.');
                     }
